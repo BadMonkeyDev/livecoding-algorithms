@@ -1,26 +1,21 @@
-export function compress(chars: string[]): number {
-    let result: string = ''
-    let i = 0 //current index of chars array
-    let j = 1 //current elements count in group
-    let k = 0 // position to rewrite new group
-    while (i < chars.length) {
-        if (chars[i] === chars[i + 1]) {
-            j++
+function compress(chars: string[]): number {
+    let write = 0; // current write position in chars array
+    let i = 0; // current read position in chars array
+    let count = 1; // count of consecutive characters
+    for (let j = 1; j <= chars.length; j++) {
+        if (j < chars.length && chars[j] === chars[i]) {
+            count++;
         } else {
-            chars[k++] = chars[i]
-            result += chars[i]
-            if (j > 1) {
-                const j_string = j.toString()
-                let l = 0
-                while (l < j_string.length) {
-                    result += j_string[l]
-                    chars[k++] = j_string[l]
-                    l++
+            chars[write++] = chars[i];
+            if (count > 1) {
+                const countStr = count.toString();
+                for (let k = 0; k < countStr.length; k++) {
+                    chars[write++] = countStr[k];
                 }
             }
-            j = 1
+            count = 1;
+            i = j;
         }
-        i++
     }
-    return result.length
+    return write;
 }
